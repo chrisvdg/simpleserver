@@ -1,0 +1,8 @@
+# hmtl pages in the main directory
+
+/*.html
+
+# executables
+*.exe
+main
+simpleserver
