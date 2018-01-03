@@ -2,7 +2,7 @@
 
 ## Prerequisites:  
 * Have [Go](http://golang.org) installed
-* Have the Go worksace bin folder accessible (`$GOPATH/bin`)
+* Have the Go workspace bin folder accessible (`$GOPATH/bin`)
 
 ## Installation
 
