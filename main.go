@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"fmt"
 	"net/http"
 )
@@ -15,5 +16,5 @@ func main() {
 	http.Handle("/", fs)
 
 	fmt.Printf("Now serving on: localhost:%d\n", *port)
-	http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 }
