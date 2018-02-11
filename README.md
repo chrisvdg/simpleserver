@@ -13,9 +13,20 @@ go get github.com/scarletdraped/simpleserver
 ## Use
 
 ```bash
-# Serves current directory on port 8080
-simpleserver 
+# list all flags
+simpleserver --help
 
-# Serves static subdirectory on port 6060
+# Serves current directory on a plain http server
+# on the default port (8080)
+simpleserver
+
+# Serves the static subdirectory on port 6060
 simpleserver --port 6060 --dir ./static 
+```
+
+### TLS
+
+Simpleserver supports TLS if tls-cert and tls-key flags are provided:
+```bash
+simpleserver --port 6060 --dir ./static --tls-cert certificate_file.cert --tls-key private_key_file.key
 ```
