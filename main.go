@@ -37,32 +37,27 @@ func main() {
 
 	// serve plain http
 	if !*tlsOnly {
-		go func() {
-			defer cancel()
-			log.Fatal(listenAndServe(fmt.Sprintf(":%d", *port), *dir, fs))
-		}()
+		go listenAndServe(cancel, fmt.Sprintf(":%d", *port), *dir, fs)
 	}
 
 	// server https
 	if tlsEnabled {
-		go func() {
-			defer cancel()
-			log.Fatal(listenAndServeTLS(fmt.Sprintf(":%d", *tlsport), *dir, *cert, *key, fs))
-		}()
+		go listenAndServeTLS(cancel, fmt.Sprintf(":%d", *tlsport), *dir, *cert, *key, fs)
 	}
 
 	<-ctx.Done()
 }
 
 // listenAndServe serves a plain http webserver
-func listenAndServe(addr string, dir string, handler http.Handler) error {
+func listenAndServe(cancel func(), addr string, dir string, handler http.Handler) {
+	defer cancel()
 	fmt.Printf("Now serving plain http on: localhost:%s\n", addr)
-	return http.ListenAndServe(addr, handler)
-
+	log.Fatal(http.ListenAndServe(addr, handler))
 }
 
 // listenAndServeTLS serves a tls webserver
-func listenAndServeTLS(addr string, dir string, cert string, key string, handler http.Handler) error {
+func listenAndServeTLS(cancel func(), addr string, dir string, cert string, key string, handler http.Handler) {
+	defer cancel()
 	fmt.Printf("Now serving tls on: localhost:%s\n", addr)
-	return http.ListenAndServeTLS(addr, cert, key, handler)
+	log.Fatal(http.ListenAndServeTLS(addr, cert, key, handler))
 }
