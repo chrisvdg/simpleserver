@@ -7,17 +7,17 @@
 ## Installation
 
 ``` bash
-go get github.com/scarletdraped/simpleserver
+go get github.com/chrisvdg/simpleserver
 ```
 
 ## Use
 
 ```bash
-# list all flags
+# List all flags
 simpleserver --help
 
-# Serves current directory on a plain http server
-# on the default port (8080)
+# Serves default directory (./public) on a plain http server on the default port (8080).
+# If the default directory does not exists, making a request to the server will return 404
 simpleserver
 
 # Serves the static subdirectory on port 6060

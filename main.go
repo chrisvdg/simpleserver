@@ -10,7 +10,7 @@ import (
 
 func main() {
 	port := flag.Uint("port", 8080, "Specifies the port on which the server will run.")
-	dir := flag.String("dir", "./", "Specifies the directory that will be served")
+	dir := flag.String("dir", "./public", "Specifies the directory that will be served")
 	cert := flag.String("tls-cert", "", "Location of tls certificate (this with the key flag enables TLS)")
 	key := flag.String("tls-key", "", "Location of the tls key (This with the tls-cert flag enables TLS)")
 	tlsOnly := flag.Bool("tls-only", false, "Only runs a tls server")
@@ -37,27 +37,27 @@ func main() {
 
 	// serve plain http
 	if !*tlsOnly {
-		go listenAndServe(cancel, fmt.Sprintf(":%d", *port), *dir, fs)
+		go listenAndServe(cancel, fmt.Sprintf(":%d", *port), fs)
 	}
 
 	// server https
 	if tlsEnabled {
-		go listenAndServeTLS(cancel, fmt.Sprintf(":%d", *tlsport), *dir, *cert, *key, fs)
+		go listenAndServeTLS(cancel, fmt.Sprintf(":%d", *tlsport), *cert, *key, fs)
 	}
 
 	<-ctx.Done()
 }
 
 // listenAndServe serves a plain http webserver
-func listenAndServe(cancel func(), addr string, dir string, handler http.Handler) {
+func listenAndServe(cancel func(), addr string, handler http.Handler) {
 	defer cancel()
 	fmt.Printf("Now serving plain http on: localhost:%s\n", addr)
-	log.Fatal(http.ListenAndServe(addr, handler))
+	log.Print(http.ListenAndServe(addr, handler))
 }
 
 // listenAndServeTLS serves a tls webserver
-func listenAndServeTLS(cancel func(), addr string, dir string, cert string, key string, handler http.Handler) {
+func listenAndServeTLS(cancel func(), addr string, cert string, key string, handler http.Handler) {
 	defer cancel()
 	fmt.Printf("Now serving tls on: localhost:%s\n", addr)
-	log.Fatal(http.ListenAndServeTLS(addr, cert, key, handler))
+	log.Print(http.ListenAndServeTLS(addr, cert, key, handler))
 }
